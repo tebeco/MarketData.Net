@@ -13,10 +13,7 @@ namespace MarketDataWeb
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
-                .UseApplicationInsights()
                 .Build();
-
-            //Scheduler scheduler = Schedulers.Computation();
 
             host.Run();
         }

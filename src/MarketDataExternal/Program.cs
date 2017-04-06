@@ -12,15 +12,12 @@ namespace MarketDataExternal
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
-                .UseStartup<Startup>()
-                .UseApplicationInsights()
-                .Build();
+            var market = new Market();
+            market.Start();
 
-            host.Run();
+            Console.WriteLine("**** Providers ready! ****");
+            Console.WriteLine("Press any key to exit");
+            Console.ReadLine();
         }
     }
 }
