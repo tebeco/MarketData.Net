@@ -18,8 +18,7 @@ namespace MarketDataCommon.Infrastructure
         {
             if (Flaky)
             {
-                _events = SubscriptionLimiter
-                    .LimitSubscriptions(1, InitializeEventStream(), DefaultScheduler.Instance);
+                _events = SubscriptionLimiter.LimitSubscriptions(1, InitializeEventStream());
             }
             else
             {
