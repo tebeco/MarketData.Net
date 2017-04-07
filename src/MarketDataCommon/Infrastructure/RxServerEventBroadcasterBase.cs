@@ -40,7 +40,6 @@ namespace MarketDataCommon.Infrastructure
 
         protected abstract IObservable<T> InitializeEventStream();
 
-
         public int Port { get; }
 
         public bool Flaky { get; }
