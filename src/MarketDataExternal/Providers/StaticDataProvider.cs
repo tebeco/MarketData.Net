@@ -26,6 +26,7 @@ namespace MarketDataExternal.Providers
             if (queryCode == null || !_stockService.TryGetFromCode(queryCode, out var stock))
             {
                 httpContext.Response.StatusCode = 404;
+                await httpContext.Response.WriteAsync("Either no code in the URL or no match for the provided code");
                 await httpContext.Response.Body.FlushAsync();
             }
             else

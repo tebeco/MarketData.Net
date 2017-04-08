@@ -21,11 +21,8 @@ namespace MarketDataCommon.Infrastructure
 
         public IWebHost CreateServer()
         {
-
             var host = new WebHostBuilder()
                 .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
                 .UseUrls($"http://localhost:{Port}")
                 .Configure(appBuilder =>
                 {
@@ -41,7 +38,6 @@ namespace MarketDataCommon.Infrastructure
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
-
             var loggerSettings = new ConsoleLoggerSettings()
             {
                 IncludeScopes = false,

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using MarketDataCommon.Dto;
 using MarketDataCommon.Infrastructure;
+using Microsoft.AspNetCore.Http;
 
 namespace MarketDataExternal.Providers
 {
     public class StockQuoteProvider : RxServerEventBroadcasterBase<Quote>
     {
-
         private const double GoogleMin = 116;
         private const double GoogleMax = 136;
         private const double IbmMin = 120;
@@ -47,6 +48,13 @@ namespace MarketDataExternal.Providers
                     .Select(s=> new Quote("MSFT", s));
 
             return Observable.Merge(googleStock, ibmStock, hpStock, appleStock, microsoftStock).Publish().RefCount();
+        }
+        
+        public override async Task ProcessHttpContextAsync(HttpContext httpContext)
+        {
+            httpContext.Response.StatusCode = 200;
+            await httpContext.Response.WriteAsync("Not implemented yet");
+            await httpContext.Response.Body.FlushAsync();
         }
     }
 }
