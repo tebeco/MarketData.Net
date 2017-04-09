@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace MarketDataExternal.Providers
 {
-    public class StockQuoteProvider : RxServerEventBroadcasterBase<Quote>
+    public class StockQuoteProvider : RxSseServer<Quote>
     {
         private const double GoogleMin = 116;
         private const double GoogleMax = 136;
@@ -22,39 +22,39 @@ namespace MarketDataExternal.Providers
 
         public StockQuoteProvider(int port, bool flaky) : base(port, flaky)
         {
-            
+
         }
 
-        protected override IObservable<Quote> InitializeEventStream()
+        public override async Task ProcessHttpContextAsync(HttpContext httpContext)
+        {
+            httpContext.Response.StatusCode = 404;
+            await httpContext.Response.WriteAsync("Not implemented yet");
+            await httpContext.Response.Body.FlushAsync();
+        }
+        protected override IObservable<Quote> GetEvents(IQueryCollection query)
         {
             var googleStock = new RandomSequenceGenerator(GoogleMin, GoogleMax)
-                    .Create(TimeSpan.FromMilliseconds(200))
-                    .Select(s=> new Quote("GOOGL", s));
+                .Create(TimeSpan.FromMilliseconds(200))
+                .Select(s => new Quote("GOOGL", s));
 
             var ibmStock = new RandomSequenceGenerator(IbmMin, IbmMax)
                 .Create(TimeSpan.FromMilliseconds(705))
-                    .Select(s=> new Quote("IBM", s));
+                .Select(s => new Quote("IBM", s));
 
             var hpStock = new RandomSequenceGenerator(HpMin, HpMax)
                 .Create(TimeSpan.FromMilliseconds(602))
-                    .Select(s=> new Quote("HPQ", s));
+                .Select(s => new Quote("HPQ", s));
 
             var appleStock = new RandomSequenceGenerator(AppleMin, AppleMax)
                 .Create(TimeSpan.FromMilliseconds(253))
-                    .Select(s=> new Quote("AAPL", s));
+                .Select(s => new Quote("AAPL", s));
 
             var microsoftStock = new RandomSequenceGenerator(MicrosoftMin, MicrosoftMax)
-                .Create(TimeSpan.FromMilliseconds(407))
-                    .Select(s=> new Quote("MSFT", s));
+                    .Create(TimeSpan.FromMilliseconds(407))
+                    .Select(s => new Quote("MSFT", s));
 
             return Observable.Merge(googleStock, ibmStock, hpStock, appleStock, microsoftStock).Publish().RefCount();
-        }
-        
-        public override async Task ProcessHttpContextAsync(HttpContext httpContext)
-        {
-            httpContext.Response.StatusCode = 200;
-            await httpContext.Response.WriteAsync("Not implemented yet");
-            await httpContext.Response.Body.FlushAsync();
+
         }
     }
 }
