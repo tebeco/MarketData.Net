@@ -15,9 +15,9 @@ namespace MarketDataCommon.Infrastructure
 
         public RandomSequenceGenerator(double min, double max)
         {
-            this._min = min;
-            this._max = max;
-            this._random = new Random();
+            _min = min;
+            _max = max;
+            _random = new Random();
         }
 
         public IObservable<Double> Create(TimeSpan interval)
@@ -25,15 +25,14 @@ namespace MarketDataCommon.Infrastructure
             double init = (_min + _max) / 2;
             return Observable
                 .Interval(interval)
-                .Aggregate(init, (previous, i) => ComputeNextNumber(previous));
+                .Scan(init, (previous, i) => ComputeNextNumber(previous));
         }
 
         public IObservable<int> CreateIntegerSequence(TimeSpan interval)
         {
-            double range = _max - _min;
             return Observable
                 .Interval(interval)
-                .Select(i => (int)(_random.NextDouble() * range + _min));
+                .Select(i => _random.Next((int)_min, (int)_max));
         }
 
         public double ComputeNextNumber(double previous)

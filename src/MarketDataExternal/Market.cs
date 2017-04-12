@@ -8,17 +8,17 @@ namespace MarketDataExternal
         {
             bool flaky = false;
 
-            ForexProvider forexProvider = new ForexProvider(8096, flaky);
-            forexProvider.CreateServer().Start();
+            ForexProvider forexProvider = new ForexProvider(7096, flaky);
+            forexProvider.CreateServer();
 
-            //StockQuoteProvider stockQuoteProvider = new StockQuoteProvider(8097, flaky);
-            //stockQuoteProvider.CreateServer().Start();
+            StockQuoteProvider stockQuoteProvider = new StockQuoteProvider(7097, flaky);
+            stockQuoteProvider.CreateServer();
 
-            //TradeProvider tradeProvider = new TradeProvider(8098, flaky, stockQuoteProvider);
-            //tradeProvider.CreateServer().Start();
+            TradeProvider tradeProvider = new TradeProvider(7098, flaky, stockQuoteProvider);
+            tradeProvider.CreateServer();
 
-            //StaticDataProvider staticDataProvider = new StaticDataProvider(8099);
-            //staticDataProvider.CreateServer().Start();
+            StaticDataProvider staticDataProvider = new StaticDataProvider(7099);
+            staticDataProvider.CreateServer().Start();
         }
     }
 }

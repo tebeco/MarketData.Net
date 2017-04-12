@@ -10,11 +10,11 @@ using Microsoft.Extensions.Logging.Console;
 
 namespace MarketDataCommon.Infrastructure
 {
-    public abstract class RxHttpServer : ICreateWebHost
+    public abstract class StaticHttpServer
     {
         public int Port { get; }
 
-        public RxHttpServer(int port)
+        public StaticHttpServer(int port)
         {
             Port = port;
         }
@@ -54,7 +54,7 @@ namespace MarketDataCommon.Infrastructure
 
             app.Use(async (context, next) =>
             {
-                await ProcessHttpContextAsync(context);
+                await ProcessHttpContextAsync(context).ConfigureAwait(false);
             });
         }
 

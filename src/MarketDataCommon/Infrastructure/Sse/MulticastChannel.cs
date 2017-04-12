@@ -11,46 +11,65 @@ namespace NetCoreSse
         private readonly int _replayBufferSize;
         private readonly IList<ServerSentEvent> _replayBuffer;
         private readonly List<IDisposable> _disposables = new List<IDisposable>();
+        private readonly object _syncRoot = new object();
 
         public MulticastChannel(int replayBufferSize = 1)
         {
             _replayBufferSize = replayBufferSize;
             _replayBuffer = new List<ServerSentEvent>(replayBufferSize);
         }
-         
+
         public async Task AddChannel(ISseChannel channel, CancellationToken token)
         {
-            _channels.Add(channel);
-            foreach (var message in _replayBuffer)
+            try
             {
-                await channel.SendAsync(message, token).ConfigureAwait(false);
+                Monitor.Enter(_syncRoot);
+
+                _channels.Add(channel);
+                foreach (var message in _replayBuffer)
+                {
+                    await channel.SendAsync(message, token).ConfigureAwait(false);
+                }
+            }
+            finally
+            {
+                Monitor.Exit(_syncRoot);
             }
         }
 
         public async Task SendAsync(ServerSentEvent message, CancellationToken token)
         {
-            var closeChannels = new List<ISseChannel>();
-            foreach (var channel in _channels)
+            try
             {
-                try
-                {
-                    await channel.SendAsync(message, token).ConfigureAwait(false);
-                }
-                catch (Exception)
-                {
-                    closeChannels.Add(channel);
-                }
-            }
-            foreach (var channel in closeChannels)
-            {
-                _channels.Remove(channel);
-            }
+                Monitor.Enter(_syncRoot);
 
-            while (_replayBuffer.Count >= _replayBufferSize)
-            {
-                _replayBuffer.RemoveAt(0);
+                var closeChannels = new List<ISseChannel>();
+                foreach (var channel in _channels)
+                {
+                    try
+                    {
+                        await channel.SendAsync(message, token).ConfigureAwait(false);
+                    }
+                    catch (Exception)
+                    {
+                        closeChannels.Add(channel);
+                    }
+                }
+                foreach (var channel in closeChannels)
+                {
+                    _channels.Remove(channel);
+                }
+
+                while (_replayBuffer.Count >= _replayBufferSize && _replayBuffer.Count > 0)
+                {
+                    _replayBuffer.RemoveAt(0);
+                }
+                _replayBuffer.Add(message);
             }
-            _replayBuffer.Add(message);
+            finally
+            {
+                Monitor.Exit(_syncRoot);
+            }
         }
 
         public void AttachDisposable(IDisposable disposable)

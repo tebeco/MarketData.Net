@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:25029/",
+      "applicationUrl": "http://localhost:2394/",
       "sslPort": 0
     }
   },
@@ -16,12 +16,7 @@
       }
     },
     "MarketDataExternal": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "http://localhost:8099?code=MSFT",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      "commandName": "Project"
     }
   }
 }

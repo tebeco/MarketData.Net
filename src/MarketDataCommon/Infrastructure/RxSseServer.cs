@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,9 +17,10 @@ using NetCoreSse;
 
 namespace MarketDataCommon.Infrastructure
 {
-    public abstract class RxSseServer<T> : ICreateWebHost
+    public abstract class RxSseServer<T>
     {
         private IObservable<T> _events;
+        private ISseChannel _sseChannel;
 
         public RxSseServer(int port, bool flaky)
         {
@@ -26,97 +28,59 @@ namespace MarketDataCommon.Infrastructure
             Flaky = flaky;
         }
 
-        public IWebHost CreateServer()
-        //{
-        //    if (Flaky)
-        //    {
-        //        _events = SubscriptionLimiter.LimitSubscriptions(1, InitializeEventStream());
-        //    }
-        //    else
-        //    {
-        //        _events = InitializeEventStream();
-        //    }
-        //    return InternalCreateServer();
-        //}
-
-        //private IWebHost InternalCreateServer()
+        public void CreateServer()
         {
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseUrls($"http://localhost:{Port}")
-                .Configure(appBuilder =>
-                {
-                    var loggerFactory = appBuilder.ApplicationServices.GetService<ILoggerFactory>();
-                    Configure(appBuilder, loggerFactory);
-                })
-                .Build();
+            if (Flaky)
+            {
+                _events = SubscriptionLimiter.LimitSubscriptions(1, InitializeEventStream());
+            }
+            else
+            {
+                _events = InitializeEventStream();
+            }
 
-            return host;
+            StartSseServer();
         }
 
-        public IObservable<T> GetEvents(object httpRequest)
+        private void StartSseServer()
+        {
+            var factory = new SseChannelFactory();
+            _sseChannel = factory.Create(IPAddress.Loopback, Port, 0);
+
+            Console.WriteLine("Subscribing ...");
+            _events.Subscribe(
+                @event =>
+                {
+                    Console.WriteLine("Writing SSE event: " + @event);
+                    ServerSentEvent sse = new ServerSentEvent(@event.ToString());
+
+                    _sseChannel.SendAsync(sse, CancellationToken.None).Wait();
+                },
+                ex =>
+                {
+                    Console.WriteLine("Write to client failed, stopping response sending.");
+                    _sseChannel.Dispose();
+                    _sseChannel = null;
+                },
+                () =>
+                {
+                    Console.WriteLine("Stream completed, disposing channel");
+                    _sseChannel.Dispose();
+                    _sseChannel = null;
+                }
+            );
+        }
+       
+        public IObservable<T> GetEvents(IQueryCollection httpRequest)
         {
             return _events;
         }
 
-        public abstract Task ProcessHttpContextAsync(HttpContext httpContext);
-
-        protected abstract IObservable<T> GetEvents(IQueryCollection query);
+        protected abstract IObservable<T> InitializeEventStream();
 
         public int Port { get; }
 
         public bool Flaky { get; }
 
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
-        {
-            var loggerSettings = new ConsoleLoggerSettings()
-            {
-                IncludeScopes = false,
-                Switches = new Dictionary<string, LogLevel>
-                {
-                    {"Default", LogLevel.Debug},
-                    {"System", LogLevel.Information},
-                    {"Microsoft", LogLevel.Information}
-                }
-            };
-
-            loggerFactory.AddConsole(loggerSettings);
-            loggerFactory.AddDebug();
-
-            app.Use((httpContext, next) =>
-            {
-                httpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-                httpContext.Response.Headers.Add("Cache-Control", "no-cache");
-                httpContext.Response.Headers.Add("Cononection", "keep-alive");
-                httpContext.Response.Headers.Add("Content-Type", "text /event-stream");
-
-                GetIntervalObservable(httpContext);
-
-                return Task.CompletedTask;
-            });
-        }
-
-        private IObservable<Unit> GetIntervalObservable(HttpContext httpContext)
-        {
-            return GetEvents(httpContext.Request.Query)
-                .SelectMany(async @event =>
-                {
-                    Console.WriteLine("Writing SSE event: " + @event);
-                    ServerSentEvent sse = new ServerSentEvent("", @event.ToString());
-                    await httpContext.Response.WriteAsync(sse.ToString());
-                    return Observable.Empty<T>();
-                })
-                .Materialize()
-                .TakeWhile(notification =>
-                {
-                    if (notification.Kind == NotificationKind.OnError)
-                    {
-                        Console.WriteLine("Write to client failed, stopping response sending.");
-                        Console.WriteLine(notification.Exception);
-                    }
-                    return notification.Kind != NotificationKind.OnError;
-                })
-                .Select(x => Unit.Default);
-        }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using NetCoreSse;
 
 namespace MarketDataCommon.Infrastructure
 {
     public interface ICreateWebHost
     {
-        IWebHost CreateServer();
+        ISseChannel CreateServer();
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace MarketDataExternal.Providers
 {
-    public class StaticDataProvider : RxHttpServer
+    public class StaticDataProvider : StaticHttpServer
     {
         private readonly StockService _stockService;
 
@@ -26,14 +26,14 @@ namespace MarketDataExternal.Providers
             if (queryCode == null || !_stockService.TryGetFromCode(queryCode, out var stock))
             {
                 httpContext.Response.StatusCode = 404;
-                await httpContext.Response.WriteAsync("Either no code in the URL or no match for the provided code");
-                await httpContext.Response.Body.FlushAsync();
+                await httpContext.Response.WriteAsync("Either no code in the URL or no match for the provided code").ConfigureAwait(false);
+                await httpContext.Response.Body.FlushAsync().ConfigureAwait(false);
             }
             else
             {
                 httpContext.Response.StatusCode = 200;
-                await httpContext.Response.WriteAsync(stock.ToJson());
-                await httpContext.Response.Body.FlushAsync();
+                await httpContext.Response.WriteAsync(stock.ToJson()).ConfigureAwait(false);
+                await httpContext.Response.Body.FlushAsync().ConfigureAwait(false);
             }
         }
     }

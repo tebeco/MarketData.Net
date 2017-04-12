@@ -16,7 +16,7 @@ namespace MarketDataExternal.Providers
             _stockQuoteProvider = stockQuoteProvider;
         }
 
-        protected override IObservable<Trade> GetEvents(IQueryCollection query)
+        protected override IObservable<Trade> InitializeEventStream()
         {
             var quotes = _stockQuoteProvider.GetEvents(null);
 
@@ -28,13 +28,6 @@ namespace MarketDataExternal.Providers
                     .Take(1)
                     .Select(qty => new Trade(quote.Code, qty, quote.QuoteValue * qty));
             });
-        }
-
-        public override async Task ProcessHttpContextAsync(HttpContext httpContext)
-        {
-            httpContext.Response.StatusCode = 404;
-            await httpContext.Response.WriteAsync("Not implemented yet");
-            await httpContext.Response.Body.FlushAsync();
         }
     }
 }
