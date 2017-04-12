@@ -36,7 +36,8 @@ namespace MarketDataCommon.Infrastructure
             }
             else
             {
-                _events = InitializeEventStream();
+                _events = SubscriptionLimiter.LimitSubscriptions(1, InitializeEventStream());
+                //_events = InitializeEventStream();
             }
 
             StartSseServer();
@@ -45,10 +46,13 @@ namespace MarketDataCommon.Infrastructure
         private void StartSseServer()
         {
             var factory = new SseChannelFactory();
-            _sseChannel = factory.Create(IPAddress.Loopback, Port, 0);
+            _sseChannel = factory.Create(IPAddress.Loopback, Port, 0, HandleRequest);
+        }
 
+        private void HandleRequest(IQueryCollection query)
+        {
             Console.WriteLine("Subscribing ...");
-            _events.Subscribe(
+            GetEvents(query).Subscribe(
                 @event =>
                 {
                     Console.WriteLine("Writing SSE event: " + @event);
@@ -70,7 +74,7 @@ namespace MarketDataCommon.Infrastructure
                 }
             );
         }
-       
+
         public IObservable<T> GetEvents(IQueryCollection httpRequest)
         {
             return _events;

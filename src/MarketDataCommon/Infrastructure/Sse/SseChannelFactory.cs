@@ -1,5 +1,7 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using NetCoreSse.Hosting;
 
 namespace NetCoreSse
@@ -9,13 +11,13 @@ namespace NetCoreSse
         private IPAddress _host;
         private int _port;
 
-        public virtual ISseChannel Create(string host, int port, int bufferSize)
+        public virtual ISseChannel Create(string host, int port, int bufferSize, Action<IQueryCollection> handleRequestAsync)
         {
             var ipAddress = IPAddress.Parse(host);
-            return Create(ipAddress, port, bufferSize);
+            return Create(ipAddress, port, bufferSize, handleRequestAsync);
         }
 
-        public virtual ISseChannel Create(IPAddress host, int port, int bufferSize)
+        public virtual ISseChannel Create(IPAddress host, int port, int bufferSize, Action<IQueryCollection> handleRequestAsync)
         {
             _host = host;
             _port = port;
@@ -23,8 +25,10 @@ namespace NetCoreSse
 
             var httpServer = new SseHttpServer(_host, _port, async contextChannel =>
             {
-                await HandleSseAsync(contextChannel).ConfigureAwait(false);
+                await PrepareSseStreamAsync(contextChannel).ConfigureAwait(false);
                 await channel.AddChannel(contextChannel, contextChannel.Token).ConfigureAwait(false);
+
+                handleRequestAsync(contextChannel.HttpContext.Request.Query);
             });
             channel.AttachDisposable(httpServer);
             httpServer.Run();
@@ -32,7 +36,7 @@ namespace NetCoreSse
             return channel;
         }
 
-        private async Task HandleSseAsync(HttpContextChannel httpContextChannel)
+        private async Task PrepareSseStreamAsync(HttpContextChannel httpContextChannel)
         {
             var httpResponse = httpContextChannel.HttpContext.Response;
 
