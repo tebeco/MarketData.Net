@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.10
+VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{6C20A509-D7A6-40BB-985A-E86879420894}"
 EndProject
@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		NuGet.config = NuGet.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketDataExternal.Tests", "test\MarketDataExternal.Tests\MarketDataExternal.Tests.csproj", "{C55C8DE0-75CF-4EBE-95E8-5681E032A78A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketDataExternal.Tests", "test\MarketDataExternal.Tests\MarketDataExternal.Tests.csproj", "{C55C8DE0-75CF-4EBE-95E8-5681E032A78A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketDataCommon.Tests", "test\MarketDataCommon.Tests\MarketDataCommon.Tests.csproj", "{8DE1B9DA-1C4D-4062-8D41-A647D7EFBA14}"
 EndProject
