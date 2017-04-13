@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using NetCoreSse.Hosting;
@@ -11,13 +12,13 @@ namespace NetCoreSse
         private IPAddress _host;
         private int _port;
 
-        public virtual ISseChannel Create(string host, int port, int bufferSize, Action<IQueryCollection> handleRequestAsync)
+        public virtual ISseChannel Create(string host, int port, int bufferSize, Func<IQueryCollection, IDisposable> handleRequestAsync)
         {
             var ipAddress = IPAddress.Parse(host);
             return Create(ipAddress, port, bufferSize, handleRequestAsync);
         }
 
-        public virtual ISseChannel Create(IPAddress host, int port, int bufferSize, Action<IQueryCollection> handleRequestAsync)
+        public virtual ISseChannel Create(IPAddress host, int port, int bufferSize, Func<IQueryCollection, IDisposable> handleRequestAsync)
         {
             _host = host;
             _port = port;
@@ -28,7 +29,7 @@ namespace NetCoreSse
                 await PrepareSseStreamAsync(contextChannel).ConfigureAwait(false);
                 await channel.AddChannel(contextChannel, contextChannel.Token).ConfigureAwait(false);
 
-                handleRequestAsync(contextChannel.HttpContext.Request.Query);
+                return handleRequestAsync(contextChannel.HttpContext.Request.Query);
             });
             channel.AttachDisposable(httpServer);
             httpServer.Run();

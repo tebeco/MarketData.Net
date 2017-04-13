@@ -12,7 +12,7 @@ namespace MarketDataCommon.Infrastructure
             int subscriptionsCount = 0;
             var observable = Observable.Create<T>(observer =>
             {
-                if (subscriptionsCount > maxNumber)
+                if (subscriptionsCount >= maxNumber)
                 {
                     var subject = new Subject<T>();
                     subject.Subscribe(observer);

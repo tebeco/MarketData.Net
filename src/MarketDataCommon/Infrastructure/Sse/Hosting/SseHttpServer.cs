@@ -7,11 +7,11 @@ namespace NetCoreSse.Hosting
 {
     public class SseHttpServer : IDisposable
     {
-        private readonly Func<HttpContextChannel, Task> _handler;
+        private readonly Func<HttpContextChannel, Task<IDisposable>> _handler;
         private volatile bool _disposed;
         private IWebHost _host;
 
-        public SseHttpServer(IPAddress ip, int port, Func<HttpContextChannel, Task> handler)
+        public SseHttpServer(IPAddress ip, int port, Func<HttpContextChannel, Task<IDisposable>> handler)
         {
             _handler = handler;
             Port = port;
@@ -40,9 +40,10 @@ namespace NetCoreSse.Hosting
                     {
                         var token = context.RequestAborted;
 
-                        await _handler(new HttpContextChannel(context, token)).ConfigureAwait(false);
+                        var disposable = await _handler(new HttpContextChannel(context, token)).ConfigureAwait(false);
 
                         await token;
+                        disposable.Dispose();
                     });
                 })
                 .Build();
