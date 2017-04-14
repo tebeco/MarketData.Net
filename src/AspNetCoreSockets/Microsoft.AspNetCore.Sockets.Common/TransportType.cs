@@ -8,9 +8,9 @@ namespace Microsoft.AspNetCore.Sockets
     [Flags]
     public enum TransportType
     {
-        WebSockets = 1,
+        //WebSockets = 1,
         ServerSentEvents = 2,
-        LongPolling = 4,
-        All = WebSockets | ServerSentEvents | LongPolling
+        //LongPolling = 4,
+        //All = WebSockets | ServerSentEvents | LongPolling
     }
 }

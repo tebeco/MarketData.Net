@@ -60,8 +60,6 @@ namespace Microsoft.AspNetCore.Sockets
 
         private async Task ExecuteEndpointAsync<TEndPoint>(string path, HttpContext context, EndPoint endpoint, EndPointOptions<TEndPoint> options) where TEndPoint : EndPoint
         {
-            var supportedTransports = options.Transports;
-
             // Server sent events transport
             if (context.Request.Path.StartsWithSegments(path + "/sse"))
             {
@@ -73,7 +71,7 @@ namespace Microsoft.AspNetCore.Sockets
                     return;
                 }
 
-                if (!await EnsureConnectionStateAsync(state, context, TransportType.ServerSentEvents, supportedTransports))
+                if (!await EnsureConnectionStateAsync(state, context, TransportType.ServerSentEvents, TransportType.ServerSentEvents))
                 {
                     // Bad connection state. It's already set the response status code.
                     return;
@@ -84,148 +82,9 @@ namespace Microsoft.AspNetCore.Sockets
 
                 await DoPersistentConnection(endpoint, sse, context, state);
             }
-            else if (context.Request.Path.StartsWithSegments(path + "/ws"))
+            else
             {
-                // Connection can be established lazily
-                var state = await GetOrCreateConnectionAsync(context);
-                if (state == null)
-                {
-                    // No such connection, GetOrCreateConnection already set the response status code
-                    return;
-                }
-
-                if (!await EnsureConnectionStateAsync(state, context, TransportType.WebSockets, supportedTransports))
-                {
-                    // Bad connection state. It's already set the response status code.
-                    return;
-                }
-
-                var ws = new WebSocketsTransport(options.WebSockets, state.Application, _loggerFactory);
-
-                await DoPersistentConnection(endpoint, ws, context, state);
-            }
-            else if (context.Request.Path.StartsWithSegments(path + "/poll"))
-            {
-                // Connection must already exist
-                var state = await GetConnectionAsync(context);
-                if (state == null)
-                {
-                    // No such connection, GetConnection already set the response status code
-                    return;
-                }
-
-                if (!await EnsureConnectionStateAsync(state, context, TransportType.LongPolling, supportedTransports))
-                {
-                    // Bad connection state. It's already set the response status code.
-                    return;
-                }
-
-                try
-                {
-                    await state.Lock.WaitAsync();
-
-                    if (state.Status == ConnectionState.ConnectionStatus.Disposed)
-                    {
-                        _logger.LogDebug("Connection {connectionId} was disposed,", state.Connection.ConnectionId);
-
-                        // The connection was disposed
-                        context.Response.StatusCode = StatusCodes.Status404NotFound;
-                        return;
-                    }
-
-                    if (state.Status == ConnectionState.ConnectionStatus.Active)
-                    {
-                        _logger.LogDebug("Connection {connectionId} is already active via {requestId}. Cancelling previous request.", state.Connection.ConnectionId, state.RequestId);
-
-                        using (state.Cancellation)
-                        {
-                            // Cancel the previous request
-                            state.Cancellation.Cancel();
-
-                            try
-                            {
-                                // Wait for the previous request to drain
-                                await state.TransportTask;
-                            }
-                            catch (OperationCanceledException)
-                            {
-                                // Should be a cancelled task
-                            }
-
-                            _logger.LogDebug("Previous poll cancelled for {connectionId} on {requestId}.", state.Connection.ConnectionId, state.RequestId);
-                        }
-                    }
-
-                    // Mark the request identifier
-                    state.RequestId = context.TraceIdentifier;
-
-                    // Mark the connection as active
-                    state.Status = ConnectionState.ConnectionStatus.Active;
-
-                    // Raise OnConnected for new connections only since polls happen all the time
-                    if (state.ApplicationTask == null)
-                    {
-                        _logger.LogDebug("Establishing new connection: {connectionId} on {requestId}", state.Connection.ConnectionId, state.RequestId);
-
-                        state.Connection.Metadata["transport"] = TransportType.LongPolling;
-
-                        state.ApplicationTask = ExecuteApplication(endpoint, state.Connection);
-                    }
-                    else
-                    {
-                        _logger.LogDebug("Resuming existing connection: {connectionId} on {requestId}", state.Connection.ConnectionId, state.RequestId);
-                    }
-
-                    var longPolling = new LongPollingTransport(state.Application.Input, _loggerFactory);
-
-                    state.Cancellation = new CancellationTokenSource();
-
-                    // REVIEW: Performance of this isn't great as this does a bunch of per request allocations
-                    var tokenSource = CancellationTokenSource.CreateLinkedTokenSource(state.Cancellation.Token, context.RequestAborted);
-
-                    // Start the transport
-                    state.TransportTask = longPolling.ProcessRequestAsync(context, tokenSource.Token);
-                }
-                finally
-                {
-                    state.Lock.Release();
-                }
-
-                var resultTask = await Task.WhenAny(state.ApplicationTask, state.TransportTask);
-
-                // If the application ended before the transport task then we need to end the connection completely
-                // so there is no future polling
-                if (resultTask == state.ApplicationTask)
-                {
-                    await _manager.DisposeAndRemoveAsync(state);
-                }
-                else if (!resultTask.IsCanceled)
-                {
-                    // Otherwise, we update the state to inactive again and wait for the next poll
-                    try
-                    {
-                        await state.Lock.WaitAsync();
-
-                        if (state.Status == ConnectionState.ConnectionStatus.Active)
-                        {
-                            // Mark the connection as inactive
-                            state.LastSeenUtc = DateTime.UtcNow;
-
-                            state.Status = ConnectionState.ConnectionStatus.Inactive;
-
-                            state.RequestId = null;
-
-                            // Dispose the cancellation token
-                            state.Cancellation.Dispose();
-
-                            state.Cancellation = null;
-                        }
-                    }
-                    finally
-                    {
-                        state.Lock.Release();
-                    }
-                }
+                throw new NotImplementedException("No moar websockets");
             }
         }
 

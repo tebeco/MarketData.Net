@@ -8,9 +8,5 @@ namespace Microsoft.AspNetCore.Sockets
     public class EndPointOptions<TEndPoint> where TEndPoint : EndPoint
     {
         public IList<string> AuthorizationPolicyNames { get; } = new List<string>();
-
-        public TransportType Transports { get; set; } = TransportType.All;
-
-        public WebSocketOptions WebSockets { get; } = new WebSocketOptions();
     }
 }
