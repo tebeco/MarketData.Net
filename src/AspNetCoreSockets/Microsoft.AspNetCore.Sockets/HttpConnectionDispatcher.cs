@@ -36,11 +36,6 @@ namespace Microsoft.AspNetCore.Sockets
         public async Task ExecuteAsync<TEndPoint>(string path, HttpContext context) where TEndPoint : EndPoint
         {
             var options = context.RequestServices.GetRequiredService<IOptions<EndPointOptions<TEndPoint>>>().Value;
-            // TODO: Authorize attribute on EndPoint
-            if (!await AuthorizeHelper.AuthorizeAsync(context, options.AuthorizationPolicyNames))
-            {
-                return;
-            }
 
             if (context.Request.Path.StartsWithSegments(path + "/negotiate"))
             {

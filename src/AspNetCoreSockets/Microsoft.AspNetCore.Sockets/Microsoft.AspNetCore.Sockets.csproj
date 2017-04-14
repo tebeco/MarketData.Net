@@ -22,6 +22,10 @@
     <PackageReference Include="System.Reflection.TypeExtensions" Version="$(CoreFxVersion)" />
     <PackageReference Include="System.Security.Claims" Version="$(CoreFxVersion)" />
     <PackageReference Include="System.Threading.Tasks.Channels" Version="$(CoreFxLabsVersion)" />
+    
+    <!-- Transitive from websockets night remove it-->
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(AspNetCoreVersion)" />
   </ItemGroup>
 
 </Project>

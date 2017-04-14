@@ -19,7 +19,6 @@ namespace Microsoft.AspNetCore.Builder
 
             callback(new SocketRouteBuilder(routes, dispatcher));
 
-            app.UseWebSocketConnections();
             app.UseRouter(routes.Build());
             return app;
         }
