@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AspNetCore.Sockets.Common\AspNetCore.Sockets.Common.csproj" />
 
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.0.0-*" />
     <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.0.0-*" />
@@ -15,6 +14,10 @@
 
     <PackageReference Include="System.Threading.Tasks.Channels" Version="0.1.0-*" />
   
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.AspNetCore.Sockets.Common\Microsoft.AspNetCore.Sockets.Common.csproj" />
   </ItemGroup>
 
 </Project>
