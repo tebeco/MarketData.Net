@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Binary.Base64" Version="0.1.0-*" />
+    <PackageReference Include="System.IO.Pipelines" Version="0.1.0-*" />
+    <PackageReference Include="System.IO.Pipelines.Extensions" Version="0.1.0-*" />
+    <PackageReference Include="System.Text.Formatting" Version="0.1.0-*" />
+    <PackageReference Include="System.Text.Primitives" Version="0.1.0-*" />
+
+    <PackageReference Include="System.Threading.Tasks.Channels" Version="0.1.0-*" />
+    <PackageReference Include="Internal.AspNetCore.Sdk" Version="2.0.0-*" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>
