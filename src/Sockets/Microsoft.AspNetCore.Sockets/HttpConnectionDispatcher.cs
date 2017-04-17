@@ -5,9 +5,7 @@ using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Pipelines;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Sockets.Internal;
@@ -66,12 +64,6 @@ namespace Microsoft.AspNetCore.Sockets
                     return;
                 }
 
-                if (!await EnsureConnectionStateAsync(state, context, TransportType.ServerSentEvents, TransportType.ServerSentEvents))
-                {
-                    // Bad connection state. It's already set the response status code.
-                    return;
-                }
-
                 // We only need to provide the Input channel since writing to the application is handled through /send.
                 var sse = new ServerSentEventsTransport(state.Application.Input, _loggerFactory);
 
@@ -85,13 +77,9 @@ namespace Microsoft.AspNetCore.Sockets
 
         private ConnectionState CreateConnection(HttpContext context)
         {
-            var format =
-                string.Equals(context.Request.Query["format"], "binary", StringComparison.OrdinalIgnoreCase)
-                    ? MessageType.Binary
-                    : MessageType.Text;
+            var format = MessageType.Text;
 
             var state = _manager.CreateConnection();
-            state.Connection.User = context.User;
 
             // TODO: this is wrong. + how does the user add their own metadata based on HttpContext
             var formatType = (string)context.Request.Query["formatType"];
@@ -232,32 +220,6 @@ namespace Microsoft.AspNetCore.Sockets
             }
         }
 
-        private async Task<bool> EnsureConnectionStateAsync(ConnectionState connectionState, HttpContext context, TransportType transportType, TransportType supportedTransports)
-        {
-            if ((supportedTransports & transportType) == 0)
-            {
-                context.Response.StatusCode = StatusCodes.Status404NotFound;
-                await context.Response.WriteAsync($"{transportType} transport not supported by this end point type");
-                return false;
-            }
-
-            connectionState.Connection.User = context.User;
-
-            var transport = connectionState.Connection.Metadata.Get<TransportType?>("transport");
-
-            if (transport == null)
-            {
-                connectionState.Connection.Metadata["transport"] = transportType;
-            }
-            else if (transport != transportType)
-            {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                await context.Response.WriteAsync("Cannot change transports mid-connection");
-                return false;
-            }
-            return true;
-        }
-
         private async Task<ConnectionState> GetConnectionAsync(HttpContext context)
         {
             var connectionId = context.Request.Query["id"];
@@ -272,27 +234,6 @@ namespace Microsoft.AspNetCore.Sockets
             }
 
             if (!_manager.TryGetConnection(connectionId, out connectionState))
-            {
-                // No connection with that ID: Not Found
-                context.Response.StatusCode = StatusCodes.Status404NotFound;
-                await context.Response.WriteAsync("No Connection with that ID");
-                return null;
-            }
-
-            return connectionState;
-        }
-
-        private async Task<ConnectionState> GetOrCreateConnectionAsync(HttpContext context)
-        {
-            var connectionId = context.Request.Query["id"];
-            ConnectionState connectionState;
-
-            // There's no connection id so this is a brand new connection
-            if (StringValues.IsNullOrEmpty(connectionId))
-            {
-                connectionState = CreateConnection(context);
-            }
-            else if (!_manager.TryGetConnection(connectionId, out connectionState))
             {
                 // No connection with that ID: Not Found
                 context.Response.StatusCode = StatusCodes.Status404NotFound;

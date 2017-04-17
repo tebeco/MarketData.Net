@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Security.Claims;
 
 namespace Microsoft.AspNetCore.Sockets
 {
@@ -10,7 +9,6 @@ namespace Microsoft.AspNetCore.Sockets
     {
         public string ConnectionId { get; }
 
-        public ClaimsPrincipal User { get; set; }
         public ConnectionMetadata Metadata { get; } = new ConnectionMetadata();
 
         public IChannelConnection<Message> Transport { get; }

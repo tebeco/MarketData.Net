@@ -1,0 +1,13 @@
+﻿{
+  "profiles": {
+    "SocketsSamples": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "/SocketsSamples/negotiate",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:16601"
+    }
+  }
+}
