@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Sockets.Internal.Formatters;
 using Microsoft.AspNetCore.Sockets.Transports;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 
 namespace Microsoft.AspNetCore.Sockets
@@ -33,11 +32,9 @@ namespace Microsoft.AspNetCore.Sockets
 
         public async Task ExecuteAsync<TEndPoint>(string path, HttpContext context) where TEndPoint : EndPoint
         {
-            var options = context.RequestServices.GetRequiredService<IOptions<EndPointOptions<TEndPoint>>>().Value;
-
             if (context.Request.Path.StartsWithSegments(path + "/negotiate"))
             {
-                await ProcessNegotiate(context, options);
+                await ProcessNegotiate(context);
             }
             else if (context.Request.Path.StartsWithSegments(path + "/send"))
             {
@@ -47,12 +44,19 @@ namespace Microsoft.AspNetCore.Sockets
             {
                 // Get the end point mapped to this http connection
                 var endpoint = (EndPoint)context.RequestServices.GetRequiredService<TEndPoint>();
-                await ExecuteEndpointAsync(path, context, endpoint, options);
+                await ExecuteEndpointAsync(path, context, endpoint);
             }
         }
 
-        private async Task ExecuteEndpointAsync<TEndPoint>(string path, HttpContext context, EndPoint endpoint, EndPointOptions<TEndPoint> options) where TEndPoint : EndPoint
+        private async Task ExecuteEndpointAsync(string path, HttpContext context, EndPoint endpoint)
         {
+            if (!context.Request.Path.StartsWithSegments(path + "/sse"))
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                await context.Response.WriteAsync("Only handle SSE");
+                await context.Response.Body.FlushAsync();
+            }
+
             // Server sent events transport
             if (context.Request.Path.StartsWithSegments(path + "/sse"))
             {
@@ -69,19 +73,12 @@ namespace Microsoft.AspNetCore.Sockets
 
                 await DoPersistentConnection(endpoint, sse, context, state);
             }
-            else
-            {
-                throw new NotImplementedException("No moar websockets");
-            }
         }
 
-        private ConnectionState CreateConnection(HttpContext context)
+        private ConnectionState CreateConnection()
         {
             var state = _manager.CreateConnection();
-
-            // TODO: this is wrong. + how does the user add their own metadata based on HttpContext
-            var formatType = (string)context.Request.Query["formatType"];
-            state.Connection.Metadata["formatType"] = string.IsNullOrEmpty(formatType) ? "json" : formatType;
+            state.Connection.Metadata["formatType"] = "json";
             return state;
         }
 
@@ -146,10 +143,10 @@ namespace Microsoft.AspNetCore.Sockets
             await endpoint.OnConnectedAsync(connection);
         }
 
-        private Task ProcessNegotiate<TEndPoint>(HttpContext context, EndPointOptions<TEndPoint> options) where TEndPoint : EndPoint
+        private Task ProcessNegotiate(HttpContext context)
         {
             // Establish the connection
-            var state = CreateConnection(context);
+            var state = CreateConnection();
 
             // Get the bytes for the connection id
             var connectionIdBuffer = Encoding.UTF8.GetBytes(state.Connection.ConnectionId);
@@ -178,31 +175,24 @@ namespace Microsoft.AspNetCore.Sockets
                 buffer = stream.ToArray();
             }
 
-            IList<Message> messages;
+            MessageFormat messageFormat;
             if (string.Equals(context.Request.ContentType, MessageFormatter.TextContentType, StringComparison.OrdinalIgnoreCase))
             {
-                var reader = new BytesReader(buffer);
-                messages = ParseSendBatch(ref reader, MessageFormat.Text);
+                messageFormat = MessageFormat.Text;
             }
             else if (string.Equals(context.Request.ContentType, MessageFormatter.BinaryContentType, StringComparison.OrdinalIgnoreCase))
             {
-                var reader = new BytesReader(buffer);
-                messages = ParseSendBatch(ref reader, MessageFormat.Binary);
+                messageFormat = MessageFormat.Binary;
             }
             else
             {
-                // Legacy, single message raw format
-
-                var format =
-                    string.Equals(context.Request.Query["format"], "binary", StringComparison.OrdinalIgnoreCase)
-                        ? MessageType.Binary
-                        : MessageType.Text;
-                messages = new List<Message>()
-                {
-                    new Message(buffer, format, endOfMessage: true)
-                };
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                await context.Response.WriteAsync($"'{context.Request.ContentType}' is not a valid Content-Type for send requests.");
+                return;
             }
 
+            var reader = new BytesReader(buffer);
+            var messages = ParseSendBatch(ref reader, messageFormat);
 
             // REVIEW: Do we want to return a specific status code here if the connection has ended?
             _logger.LogDebug("Received batch of {0} message(s) in '/send'", messages.Count);
@@ -217,7 +207,7 @@ namespace Microsoft.AspNetCore.Sockets
                 }
             }
         }
-
+        
         private async Task<ConnectionState> GetConnectionAsync(HttpContext context)
         {
             var connectionId = context.Request.Query["id"];
@@ -242,7 +232,7 @@ namespace Microsoft.AspNetCore.Sockets
             return connectionState;
         }
 
-        private IList<Message> ParseSendBatch(ref BytesReader payload, MessageFormat messageFormat)
+        private List<Message> ParseSendBatch(ref BytesReader payload, MessageFormat messageFormat)
         {
             var messages = new List<Message>();
 
