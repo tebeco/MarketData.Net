@@ -77,8 +77,6 @@ namespace Microsoft.AspNetCore.Sockets
 
         private ConnectionState CreateConnection(HttpContext context)
         {
-            var format = MessageType.Text;
-
             var state = _manager.CreateConnection();
 
             // TODO: this is wrong. + how does the user add their own metadata based on HttpContext
