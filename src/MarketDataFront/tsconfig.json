@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "commonjs",
+    "declaration": false,
+    "noImplicitAny": false,
+    "outDir": "output",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "types": [
+      "chai",
+      "mocha",
+      "node",
+      "d3"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "output"
+  ]
+}
