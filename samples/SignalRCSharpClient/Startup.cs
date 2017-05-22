@@ -23,6 +23,15 @@ namespace SignalRCSharpClient
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder
+                        .WithOrigins("http://localhost:3000")
+                        .AllowAnyMethod()
+                    );
+            });
+
             services.AddSignalR();
             services.AddMvc();
         }
@@ -30,6 +39,8 @@ namespace SignalRCSharpClient
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseCors("AllowSpecificOrigin");
+
             app.UseSignalR(routes => { routes.MapHub<MyHub>("myHub"); });
             app.UseMvc();
         }

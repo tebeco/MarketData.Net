@@ -1,9 +1,11 @@
 import * as React from 'react';
 import './App.css';
+import { SignalR } from './SignalR';
 
 const logo = require('./logo.svg');
 
 class App extends React.Component<{}, null> {
+
   render() {
     return (
       <div className="App">
@@ -14,6 +16,7 @@ class App extends React.Component<{}, null> {
         <p className="App-intro">
           To get started, edit <code>src/App.tsx</code> and save to reload.
         </p>
+        <SignalR />
       </div>
     );
   }
