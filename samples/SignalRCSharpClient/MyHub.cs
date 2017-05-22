@@ -8,15 +8,6 @@ namespace SignalRCSharpClient
 {
     public class MyHub : Hub
     {
-        public MyHub()
-        {
-            Task.Run(async () =>
-            {
-                Thread.Sleep(4000);
-                await Send("smndbfskjhdfjkh");
-            });
-        }
-
         public async Task Send(string data)
         {
             try
@@ -31,13 +22,17 @@ namespace SignalRCSharpClient
             }
         }
 
-        public override Task OnConnectedAsync()
+        public async override Task OnConnectedAsync()
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("connected");
             Console.ResetColor();
 
-            return base.OnConnectedAsync();
+            await base.OnConnectedAsync();
+
+            await Task.Delay(500);
+            await Send("smndbfskjhdfjkh");
+
         }
 
         public override Task OnDisconnectedAsync(Exception exception)
