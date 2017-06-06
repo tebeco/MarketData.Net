@@ -1,18 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>    
-    <TargetFramework>netcoreapp1.1</TargetFramework>    
-    <OutputTypeEx>exe</OutputTypeEx>    
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="MarketDataCommon.Tests.v3.ncrunchproject" />
+    <None Remove="*.ncrunch*" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="4.19.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="System.Reactive" Version="4.0.0-*" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0-preview-20170427-09" />
     <PackageReference Include="Microsoft.Reactive.Testing" Version="4.0.0-*" />
     <PackageReference Include="NSubstitute" Version="2.0.2" />
     <PackageReference Include="xunit" Version="2.2.0" />
@@ -21,10 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\MarketDataCommon\MarketDataCommon.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 
 </Project>

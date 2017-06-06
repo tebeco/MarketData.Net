@@ -1,8 +1,9 @@
 import * as React from 'react';
 import './App.css';
-import { SignalR } from './SignalR';
+import { Workspace } from './Workspace';
 
 const logo = require('./logo.svg');
+const hubUrl: string = 'http://localhost:5000/chatRoom';
 
 class App extends React.Component<{}, null> {
 
@@ -13,13 +14,10 @@ class App extends React.Component<{}, null> {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to React</h2>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <SignalR />
+        <Workspace hubUrl={hubUrl} />
       </div>
     );
   }
 }
 
-export default App;
+export { App };

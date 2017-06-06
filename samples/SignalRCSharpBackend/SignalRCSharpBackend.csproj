@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <UserSecretsId>aspnet-SignalRCSharpClient-17DCEF9F-704B-4800-BA6A-12946283665C</UserSecretsId>
+    <UserSecretsId>aspnet-SignalRCSharpBackend-6F7BDC31-0792-4F78-8688-7A3EA6B2403F</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0-preview2-25140" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0-preview1-final" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-preview2-25140" />
   </ItemGroup>
 
