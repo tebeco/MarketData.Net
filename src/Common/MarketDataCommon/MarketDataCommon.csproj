@@ -13,4 +13,8 @@
     
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Infratructure\WebSocket\" />
+  </ItemGroup>
+
 </Project>

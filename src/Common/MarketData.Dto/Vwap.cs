@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace MarketDataCommon.Dto
+namespace MarketData.Dto
 {
-    public class Vwap : IJsonable
+    public class Vwap : IProduceJson
     {
         public string Code { get; set; }
         public double VwapValue { get; set; }

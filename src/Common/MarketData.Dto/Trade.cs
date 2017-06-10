@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace MarketDataCommon.Dto
+namespace MarketData.Dto
 {
-    public class Trade : IJsonable
+    public class Trade : IProduceJson
     {
         public string Code { get; set; }
         public int Quantity { get; set; }

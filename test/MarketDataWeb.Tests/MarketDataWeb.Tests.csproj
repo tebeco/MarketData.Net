@@ -13,11 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MarketData.ForexServer\MarketData.ForexServer.csproj" />
-    <ProjectReference Include="..\..\src\MarketData.StockQuoteServer\MarketData.StockQuoteServer.csproj" />
-    <ProjectReference Include="..\..\src\MarketData.StockServer\MarketData.StockServer.csproj" />
-    <ProjectReference Include="..\..\src\MarketData.VwapServer\MarketData.VwapServer.csproj" />
-    <ProjectReference Include="..\..\src\MarketDataCommon\MarketDataCommon.csproj" />
+    <ProjectReference Include="..\..\src\Bridges\MarketData.ForexServer\MarketData.Bridge.Forex.csproj" />
+    <ProjectReference Include="..\..\src\Bridges\MarketData.StockQuoteServer\MarketData.Bridge.StockQuote.csproj" />
+    <ProjectReference Include="..\..\src\Bridges\MarketData.StockServer\MarketData.Bridge.Stock.csproj" />
+    <ProjectReference Include="..\..\src\Bridges\MarketData.VwapServer\MarketData.Bridge.Vwap.csproj" />
     <ProjectReference Include="..\MarbleTest.Net\MarbleTest.Net.csproj" />
   </ItemGroup>
 
