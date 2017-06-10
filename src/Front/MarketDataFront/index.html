@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script type="text/javascript" src="node_modules/systemjs/dist/system.js"></script>
+    <script type="text/javascript" src="node_modules/eventsource/example/eventsource-polyfill.js"></script>
+    <!--<script type="text/javascript" src="output/src/index.js"></script>-->
+    <script>
+        var exports = {};
+    </script>
+    <script type="text/javascript">
+        System.config({
+            //defaultJSExtensions: true,
+            defaultExtension: 'ts',
+            transpiler: 'typescript',
+            map: {
+                typescript: 'node_modules/typescript/lib/typescript.js',
+                'rxjs/Rx': 'node_modules/rxjs/Rx.js',
+                'd3': 'node_modules/d3/d3.js'
+            },
+            packages: {
+                "src": {
+                    "defaultExtension": "ts"
+                },
+                "node_modules/rxjs": {
+                    "defaultExtension": "js"
+                }
+            },
+            meta: {
+                '*.ts': {
+                    format: 'es6'
+                }
+            }
+        });
+        System.import('src/index');
+    </script>
+</head>
+<body>
+<div>sfdgljdsflhj</div>
+</body>
+</html>
