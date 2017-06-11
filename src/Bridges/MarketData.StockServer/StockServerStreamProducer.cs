@@ -1,11 +1,10 @@
-﻿using MarketDataCommon.Dto;
-using MarketDataCommon.Infratructure.WebSocket;
-using System;
+﻿using System;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using StockDto = MarketData.Dto.Stock;
 
-namespace MarketData.StockServer
+namespace MarketData.Bridge.Stock
 {
     public class StockServerStreamProducer
     {
@@ -23,9 +22,9 @@ namespace MarketData.StockServer
             _scheduler = scheduler;
         }
 
-        public Task<IObservable<Stock>> GetEvents()
+        public Task<IObservable<StockDto>> GetEvents()
         {
-            return Task.FromResult(Observable.Return(new Stock("SOME CODE", "SOME COMPANY NAME", "SOME MARKET")));
+            return Task.FromResult(Observable.Return(new StockDto("SOME CODE", "SOME COMPANY NAME", "SOME MARKET")));
         }
     }
 }

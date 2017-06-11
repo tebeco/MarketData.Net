@@ -1,14 +1,14 @@
-﻿using MarketDataCommon.Dto;
-using MarketDataExternal.Providers;
+﻿using MarketData.Backend.AllInOne.Providers;
+using MarketData.Dto;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace MarketDataExternal.RxServers
+namespace MarketData.Backend.AllInOne.RxServers
 {
-    public class Startup<T, U> where T : class, IStreamProvider<U> where U : IJsonable
+    public class Startup<T, U> where T : class, IStreamProvider<U> where U : IProduceJson
     {
         public Startup(IHostingEnvironment env)
         {

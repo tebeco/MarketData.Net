@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using MarketData.Backend.Trade.Middlewares;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using MarketDataExternalCommon;
-using ForexMarket.Middlewares;
 
-namespace TradeMarket
+namespace MarketData.Backend.Trade
 {
     public class Startup
     {

@@ -1,5 +1,5 @@
-﻿using MarketDataCommon.Dto;
-using MarketDataExternal.Providers;
+﻿using MarketData.Backend.AllInOne.Providers;
+using MarketData.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,9 +13,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MarketDataExternal.RxServers
+namespace MarketData.Backend.AllInOne.RxServers
 {
-    public class RxWebSocketMiddleware<T, U> where T : IStreamProvider<U> where U : IJsonable
+    public class RxWebSocketMiddleware<T, U> where T : IStreamProvider<U> where U : IProduceJson
     {
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;

@@ -1,5 +1,5 @@
-﻿using MarketDataCommon.Dto;
-using MarketDataCommon.Infratructure.WebSocket;
+﻿using MarketData.Dto;
+using MarketData.Infrastructure;
 using System.Reactive.Concurrency;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MarketData.StockServer
+namespace MarketData.Bridge.Stock
 {
     public class StockServerMiddleware
     {

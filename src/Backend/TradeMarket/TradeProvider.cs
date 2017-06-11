@@ -1,9 +1,10 @@
-﻿using MarketDataCommon.Dto;
-using MarketDataCommon.Infrastructure;
+﻿using MarketData.Backend.StockQuote;
+using TradeDto = MarketData.Dto.Trade;
+using MarketData.Infrastructure;
 using System;
 using System.Reactive.Linq;
 
-namespace MarketDataExternalCommon
+namespace MarketData.Backend.Trade
 {
     public class TradeProvider
     {
@@ -14,7 +15,7 @@ namespace MarketDataExternalCommon
             _stockQuoteProvider = new StockQuoteProvider();
         }
 
-        public IObservable<Trade> GetEventStream()
+        public IObservable<TradeDto> GetEventStream()
         {
             var quotes = _stockQuoteProvider.GetEventStream();
 
@@ -24,7 +25,7 @@ namespace MarketDataExternalCommon
             {
                 return quantities
                     .Take(1)
-                    .Select(qty => new Trade(quote.Code, qty, quote.QuoteValue * qty));
+                    .Select(qty => new TradeDto(quote.Code, qty, quote.QuoteValue * qty));
             });
         }
     }

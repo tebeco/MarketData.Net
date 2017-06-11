@@ -33,11 +33,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{10E156
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TryingToMerge", "TryingToMerge", "{B939B732-9405-434D-9E5D-F55EE1D4AFE9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketData.Backend.AllInOne", "src\Backend\TryingToMerge\MarketDataExternal\MarketData.Backend.AllInOne.csproj", "{1623CB4C-A5A6-4BE2-AB80-C582032BAE27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketData.Backend.AllInOne", "src\Backend\TryingToMerge\MarketData.Backend.AllInOne\MarketData.Backend.AllInOne.csproj", "{1623CB4C-A5A6-4BE2-AB80-C582032BAE27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketData.Dto", "src\Common\MarketData.Dto\MarketData.Dto.csproj", "{96FA0152-A1E1-4436-A9EC-65E22FF1ED89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketData.Dto", "src\Common\MarketData.Dto\MarketData.Dto.csproj", "{96FA0152-A1E1-4436-A9EC-65E22FF1ED89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketData.Observable", "src\Common\MarketData.Infrastructure.RxWebSocket\MarketData.Observable.csproj", "{79214017-1DD2-461E-96C9-9EEC86DB8542}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketData.Infrastructure", "src\Common\MarketData.Infrastructure\MarketData.Infrastructure.csproj", "{79214017-1DD2-461E-96C9-9EEC86DB8542}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

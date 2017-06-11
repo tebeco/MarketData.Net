@@ -1,11 +1,11 @@
-﻿using MarketDataCommon.Dto;
-using MarketDataCommon.Infratructure.WebSocket;
+﻿using MarketData.Dto;
+using MarketData.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
-namespace MarketData.ForexServer
+namespace MarketData.Bridge.Forex
 {
     public class ForexMiddleware
     {

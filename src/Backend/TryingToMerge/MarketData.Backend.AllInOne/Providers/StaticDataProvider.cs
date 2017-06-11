@@ -1,9 +1,9 @@
-﻿using MarketDataCommon.Dto;
+﻿using MarketData.Dto;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MarketDataExternal.Providers
+namespace MarketData.Backend.AllInOne.Providers
 {
     public class StaticDataProvider
     {

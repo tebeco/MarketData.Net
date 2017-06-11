@@ -1,9 +1,9 @@
-﻿using MarketDataCommon.Dto;
-using MarketDataCommon.Infrastructure;
+﻿using MarketData.Dto;
+using MarketData.Infrastructure;
 using System;
 using System.Reactive.Linq;
 
-namespace MarketDataExternal.Providers
+namespace MarketData.Backend.AllInOne.Providers
 {
     public class TradeProvider : IStreamProvider<Trade>
     {

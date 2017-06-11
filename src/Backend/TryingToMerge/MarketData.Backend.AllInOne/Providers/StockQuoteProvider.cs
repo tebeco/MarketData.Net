@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Reactive.Linq;
-using MarketDataCommon.Dto;
-using MarketDataCommon.Infrastructure;
+using MarketData.Dto;
+using MarketData.Infrastructure;
 
-namespace MarketDataExternal.Providers
+namespace MarketData.Backend.AllInOne.Providers
 {
     public class StockQuoteProvider : IStreamProvider<Quote>
     {

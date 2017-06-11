@@ -1,6 +1,6 @@
-﻿using MMarketDataVwapServer;
-using MarketDataCommon.Dto;
-using MarketDataCommon.Infratructure.WebSocket;
+﻿using MarketData.Dto;
+using MarketData.Infrastructure;
+using MarketData.VwapServer;
 using Microsoft.Reactive.Testing;
 using NSubstitute;
 using System;

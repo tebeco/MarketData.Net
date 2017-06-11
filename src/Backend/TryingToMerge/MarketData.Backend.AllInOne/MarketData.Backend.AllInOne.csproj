@@ -23,4 +23,9 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\MarketData.Dto\MarketData.Dto.csproj" />
+    <ProjectReference Include="..\..\..\Common\MarketData.Infrastructure\MarketData.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

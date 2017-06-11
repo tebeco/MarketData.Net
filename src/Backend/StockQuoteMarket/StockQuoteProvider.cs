@@ -1,9 +1,9 @@
-﻿using MarketDataCommon.Dto;
-using MarketDataCommon.Infrastructure;
+﻿using MarketData.Dto;
+using MarketData.Infrastructure;
 using System;
 using System.Reactive.Linq;
 
-namespace MarketDataExternalCommon
+namespace MarketData.Backend.StockQuote
 {
     public class StockQuoteProvider
     {

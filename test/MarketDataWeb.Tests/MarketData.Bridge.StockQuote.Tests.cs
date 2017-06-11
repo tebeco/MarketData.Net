@@ -1,14 +1,11 @@
-﻿using MarketDataCommon.Infratructure.WebSocket;
-using Xunit;
+﻿using Xunit;
 using MarbleScheduler = MarbleTest.Net.MarbleScheduler;
 using NSubstitute;
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using MarketDataCommon.Dto;
-using System.Reactive.Concurrency;
-using MarketData.StockServer;
-using MarketDataCommon.Infratructure;
+using MarketData.Dto;
+using MarketData.Bridge.Stock;
 
 namespace MarketDataWeb.Tests
 {

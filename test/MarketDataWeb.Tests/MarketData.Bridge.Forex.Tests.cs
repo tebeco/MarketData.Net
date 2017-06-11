@@ -1,12 +1,12 @@
-using MarketData.ForexServer;
-using MarketDataCommon.Infratructure.WebSocket;
 using Xunit;
 using MarbleScheduler = MarbleTest.Net.MarbleScheduler;
 using NSubstitute;
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using MarketDataCommon.Dto;
+using MarketData.Dto;
+using MarketData.Infrastructure;
+using MarketData.Bridge.Forex;
 
 namespace MarketDataWeb.Tests
 {

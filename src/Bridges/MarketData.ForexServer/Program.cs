@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
-namespace MarketData.ForexServer
+namespace MarketData.Bridge.Forex
 {
     public class Program
     {

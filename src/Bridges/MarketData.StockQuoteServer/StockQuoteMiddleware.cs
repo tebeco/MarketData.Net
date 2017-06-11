@@ -1,13 +1,12 @@
-﻿using MarketDataCommon.Dto;
-using MarketDataCommon.Infratructure;
-using MarketDataCommon.Infratructure.WebSocket;
+﻿using MarketData.Dto;
+using MarketData.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
-namespace MarketData.StockQuoteServer
+namespace MarketData.Bridge.StockQuote
 {
     public class StockQuoteMiddleware
     {

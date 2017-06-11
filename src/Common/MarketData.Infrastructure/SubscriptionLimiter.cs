@@ -5,7 +5,7 @@ using System.Reactive.Subjects;
 using System.Text;
 using System.Threading;
 
-namespace MarketDataCommon.Infratructure
+namespace MarketData.Infrastructure
 {
     public class SubscriptionLimiter
     {

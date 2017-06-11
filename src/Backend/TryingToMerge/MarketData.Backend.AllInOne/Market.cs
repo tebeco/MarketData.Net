@@ -1,11 +1,11 @@
-﻿using MarketDataCommon.Dto;
-using MarketDataExternal.Providers;
-using MarketDataExternal.RxServers;
+﻿using MarketData.Backend.AllInOne.Providers;
+using MarketData.Backend.AllInOne.RxServers;
+using MarketData.Dto;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.IO;
 
-namespace MarketDataExternal
+namespace MarketData.Backend.AllInOne
 {
     public class Market
     {

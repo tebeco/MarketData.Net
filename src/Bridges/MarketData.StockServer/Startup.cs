@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Reactive.Concurrency;
 
-namespace MarketData.StockServer
+namespace MarketData.Bridge.Stock
 {
     public class Startup
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace MarketDataCommon.Infratructure.WebSocket
+namespace MarketData.Infrastructure
 {
     public interface IProduceObservable<T>
     {

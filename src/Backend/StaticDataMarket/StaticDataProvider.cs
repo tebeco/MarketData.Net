@@ -1,8 +1,8 @@
-﻿using MarketDataCommon.Dto;
+﻿using MarketData.Dto;
 using System;
 using System.Collections.Generic;
 
-namespace MarketDataExternalCommon
+namespace MarketData.Backend.StaticData
 {
     public class StaticDataProvider
     {

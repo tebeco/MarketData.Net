@@ -17,6 +17,8 @@
     <ProjectReference Include="..\..\src\Bridges\MarketData.StockQuoteServer\MarketData.Bridge.StockQuote.csproj" />
     <ProjectReference Include="..\..\src\Bridges\MarketData.StockServer\MarketData.Bridge.Stock.csproj" />
     <ProjectReference Include="..\..\src\Bridges\MarketData.VwapServer\MarketData.Bridge.Vwap.csproj" />
+    <ProjectReference Include="..\..\src\Common\MarketData.Dto\MarketData.Dto.csproj" />
+    <ProjectReference Include="..\..\src\Common\MarketData.Infrastructure\MarketData.Infrastructure.csproj" />
     <ProjectReference Include="..\MarbleTest.Net\MarbleTest.Net.csproj" />
   </ItemGroup>
 

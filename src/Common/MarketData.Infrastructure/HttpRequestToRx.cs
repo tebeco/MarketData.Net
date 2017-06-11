@@ -1,12 +1,9 @@
-﻿using MarketDataCommon.Infratructure.WebSocket;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Net.Http;
 using System.Reactive.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace MarketDataCommon.Infratructure
+namespace MarketData.Infrastructure
 {
     public class RxRequestReplyClient : IProduceObservable<string>
     {

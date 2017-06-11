@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MarketData.Backend.AllInOne.Providers;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Text;
-using MarketDataExternal.Providers;
 
-namespace MarketDataExternal.RxServers
+namespace MarketData.Backend.AllInOne.RxServers
 {
     public class StaticDataMiddleware
     {

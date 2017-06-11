@@ -1,5 +1,4 @@
-﻿using MarketDataExternalCommon;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StockQuoteMarket.Middlewares
+namespace MarketData.Backend.StockQuote.Middlewares
 {
     public class StockQuoteMiddleware
     {

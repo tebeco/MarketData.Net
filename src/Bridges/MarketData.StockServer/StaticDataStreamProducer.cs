@@ -1,10 +1,10 @@
-﻿using MarketDataCommon.Infratructure.WebSocket;
+﻿using MarketData.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MarketData.StockServer
+namespace MarketData.Bridge.Stock
 {
     public interface IProduceStaticDataObservable : IProduceObservable<string> { }
 

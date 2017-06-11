@@ -1,13 +1,13 @@
-﻿using MMarketDataStockQuoteServer;
-using MarketDataCommon.Infratructure.WebSocket;
+﻿using MarketData.Infrastructure;
 using Xunit;
 using MarbleScheduler = MarbleTest.Net.MarbleScheduler;
 using NSubstitute;
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using MarketDataCommon.Dto;
+using MarketData.Dto;
 using System.Reactive.Concurrency;
+using MarketData.Bridge.StockQuote;
 
 namespace MarketDataWeb.Tests
 {

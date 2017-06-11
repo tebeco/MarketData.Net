@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace MarketDataExternal.RxServers
+namespace MarketData.Backend.AllInOne.RxServers
 {
     public class StaticDataStartup
     {
