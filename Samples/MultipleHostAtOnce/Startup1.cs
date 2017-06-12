@@ -18,22 +18,11 @@ namespace MultipleHostAtOnce
         {
         }
 
-        private void OnApplicationStarted(ILoggerFactory loggerFactory)
-        {
-            var logger = loggerFactory.CreateLogger<Startup1>();
-            logger.LogDebug("Application 1 started");
-        }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole()
+            loggerFactory.AddConsole(LogLevel.Debug)
                          .AddDebug();
-            applicationLifetime.ApplicationStarted.Register(() =>
-            {
-                var localLoggerFactory = app.ApplicationServices.GetRequiredService<ILoggerFactory>();
-                OnApplicationStarted(localLoggerFactory);
-            });
 
             if (env.IsDevelopment())
             {

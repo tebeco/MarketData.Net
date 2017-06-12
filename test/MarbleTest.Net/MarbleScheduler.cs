@@ -5,8 +5,6 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Reactive.Testing;
 
 namespace MarbleTest.Net
@@ -68,7 +66,7 @@ namespace MarbleTest.Net
 
         public TimeSpan CreateTime(string marbles)
         {
-            var endIndex = marbles.IndexOf("|");
+            var endIndex = marbles.IndexOf("|", StringComparison.Ordinal);
             if (endIndex == -1)
             {
                 throw new Exception("Marble diagram for time should have a completion marker '|'");
@@ -155,8 +153,6 @@ namespace MarbleTest.Net
             public IList<Recorded<Notification<object>>> Actual { get; set; }
             public IList<Recorded<Notification<object>>> Expected { get; set; }
 
-            private readonly Type _notificationsType = typeof(IList<Recorded<Notification<object>>>);
-
             public void Run()
             {
                 CheckEquality(Actual, Expected);
@@ -238,7 +234,7 @@ namespace MarbleTest.Net
 
         public void Flush()
         {
-            base.Start();
+            Start();
             var readyFlushTests = _flushTests.Where(test => test.Ready);
             readyFlushTests.ToList().ForEach(test => test.Run());
         }

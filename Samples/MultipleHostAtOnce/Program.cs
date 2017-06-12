@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MultipleHostAtOnce
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -35,9 +35,7 @@ namespace MultipleHostAtOnce
             host1.Start();
             host2.Start();
 
-
             Console.ReadLine();
-
         }
     }
 }
