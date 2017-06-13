@@ -13,7 +13,7 @@ namespace MarbleTest.Net
         public static T GetProperty<T>(object o, string propName)
         {
             Type t = o.GetType();
-            var p = t.GetProperty(propName);
+            var p = t.GetRuntimeProperty(propName);
             object v = p.GetValue(o);
             return (T)v;
         }
