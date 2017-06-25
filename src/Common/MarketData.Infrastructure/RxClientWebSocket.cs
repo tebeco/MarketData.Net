@@ -34,26 +34,25 @@ namespace MarketData.Infrastructure
             if (webSocket == null)
                 throw new ArgumentNullException(nameof(webSocket));
 
-            return Observable.Create<Message>(async (observer) =>
+            return Observable.Create<Message>(async (observer, cts) =>
             {
-                await StartPolling(webSocket, observer);
+                await StartPolling(webSocket, observer, cts);
                 return (IDisposable)observer;
             });
         }
 
-        private async Task StartPolling(ClientWebSocket webSocket, IObserver<Message> pushToSubject)
+        private async Task StartPolling(ClientWebSocket webSocket, IObserver<Message> pushToSubject, CancellationToken cts)
         {
             try
             {
                 var incomingMessage = new List<ArraySegment<byte>>();
-                while (true)
+                while (cts.IsCancellationRequested)
                 {
-                    const int bufferSize = 4096;
                     var totalBytes = 0;
                     WebSocketReceiveResult receiveResult;
                     do
                     {
-                        var buffer = new ArraySegment<byte>(new byte[bufferSize]);
+                        var buffer = new ArraySegment<byte>(new byte[4096]);
 
                         // Exceptions are handled above where the send and receive tasks are being run.
                         receiveResult = await webSocket.ReceiveAsync(buffer, CancellationToken.None);
