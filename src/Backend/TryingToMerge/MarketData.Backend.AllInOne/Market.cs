@@ -1,6 +1,4 @@
-﻿using MarketData.Backend.AllInOne.Providers;
-using MarketData.Backend.AllInOne.RxServers;
-using MarketData.Dto;
+﻿using MarketData.Backend.AllInOne.Startup;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.IO;
@@ -16,59 +14,59 @@ namespace MarketData.Backend.AllInOne
             StartTrade();
             StartStaticData();
 
-            Console.ReadLine();   
+            Console.ReadLine();
         }
 
         public static void StartForex()
         {
-            var host = new WebHostBuilder()
+            var forexHost = new WebHostBuilder()
                 .UseKestrel()
-                .UseUrls("http://localhost:8096")
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                //.UseIISIntegration()
-                .UseStartup<Startup<ForexProvider, Quote>>()
+                .UseEnvironment("Development")
+                .UseUrls("http://localhost:8096")
+                .UseStartup<ForexStartup>()
                 .Build();
 
-            host.Start();
+            forexHost.Start();
         }
 
         public static void StartStockQuote()
         {
-            var host = new WebHostBuilder()
+            var stockQuoteHost = new WebHostBuilder()
                 .UseKestrel()
-                .UseUrls("http://localhost:8097")
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                //.UseIISIntegration()
-                .UseStartup<Startup<StockQuoteProvider, Quote>>()
+                .UseEnvironment("Development")
+                .UseUrls("http://localhost:8097")
+                .UseStartup<StockQuoteStartup>()
                 .Build();
 
-            host.Start();
+            stockQuoteHost.Start();
         }
 
         public static void StartTrade()
         {
-            var host = new WebHostBuilder()
+            var tradeHost = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseEnvironment("Development")
                 .UseUrls("http://localhost:8098")
-                //.UseIISIntegration()
-                .UseStartup<Startup<TradeProvider, Trade>>()
+                .UseStartup<TradeStartup>()
                 .Build();
 
-            host.Start();
+            tradeHost.Start();
         }
 
         public static void StartStaticData()
         {
-            var host = new WebHostBuilder()
+            var staticDataHost = new WebHostBuilder()
                 .UseKestrel()
-                .UseUrls("http://localhost:8099")
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                //.UseIISIntegration()
+                .UseEnvironment("Development")
+                .UseUrls("http://localhost:8099")
                 .UseStartup<StaticDataStartup>()
                 .Build();
 
-            host.Start();
+            staticDataHost.Start();
         }
     }
 }
