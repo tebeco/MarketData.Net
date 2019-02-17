@@ -2,7 +2,7 @@
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using StockDto = MarketData.Dto.Stock;
+using StockDto = MarketData.Common.Dto.Stock;
 
 namespace MarketData.Bridge.Stock
 {
@@ -12,10 +12,7 @@ namespace MarketData.Bridge.Stock
         private IProduceStockObservable _externalStockEventStream;
         private IProduceStaticDataObservable _stockStaticDataStream;
 
-        public StockServerStreamProducer(
-            IProduceStaticDataObservable stockStaticDataStream,
-            IProduceStockObservable externalStockEventStream,
-            IScheduler scheduler)
+        public StockServerStreamProducer(IProduceStaticDataObservable stockStaticDataStream, IProduceStockObservable externalStockEventStream, IScheduler scheduler)
         {
             _stockStaticDataStream = stockStaticDataStream;
             _externalStockEventStream = externalStockEventStream;

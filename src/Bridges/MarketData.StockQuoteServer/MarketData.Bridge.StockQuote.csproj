@@ -13,4 +13,8 @@
     <PackageReference Include="System.Reactive" Version="4.*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\MarketData.Common\MarketData.Common.csproj" />
+  </ItemGroup>
+
 </Project>

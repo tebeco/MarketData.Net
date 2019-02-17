@@ -14,10 +14,7 @@ namespace MarketData.Bridge.StockQuote
         private IProduceObservable<string> _externalForexStream;
         private IScheduler _scheduler;
 
-        public StockQuoteMiddleware(
-            IProduceObservable<string> externalStockQuoteStream,
-            IProduceObservable<string> externalForexStream,
-            IScheduler scheduler)
+        public StockQuoteMiddleware(IProduceObservable<string> externalStockQuoteStream, IProduceObservable<string> externalForexStream, IScheduler scheduler)
         {
             _externalStockQuoteStream = externalStockQuoteStream;
             _externalForexStream = externalForexStream;

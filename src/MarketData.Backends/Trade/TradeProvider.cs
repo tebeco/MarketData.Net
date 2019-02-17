@@ -1,5 +1,5 @@
 ﻿using MarketData.Backends.StockQuote;
-using TradeDto = MarketData.Dto.Trade;
+using TradeDto = MarketData.Common.Dto.Trade;
 using MarketData.Common.Infrastructure;
 using System;
 using System.Reactive.Linq;
