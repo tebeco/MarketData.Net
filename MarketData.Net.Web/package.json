@@ -1,0 +1,19 @@
+{
+  "name": "marketdata",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tebeco/MarketData.Net.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tebeco/MarketData.Net/issues"
+  },
+  "homepage": "https://github.com/tebeco/MarketData.Net#readme"
+}
