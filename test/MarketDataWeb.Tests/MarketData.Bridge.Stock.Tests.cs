@@ -5,7 +5,7 @@ using NSubstitute;
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using MarketData.Dto;
+using MarketData.Common.Dto;
 using System.Reactive.Concurrency;
 using MarketData.Bridge.StockQuote;
 

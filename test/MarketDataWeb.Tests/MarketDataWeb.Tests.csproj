@@ -18,8 +18,8 @@
     <ProjectReference Include="..\..\src\Bridges\MarketData.StockQuoteServer\MarketData.Bridge.StockQuote.csproj" />
     <ProjectReference Include="..\..\src\Bridges\MarketData.StockServer\MarketData.Bridge.Stock.csproj" />
     <ProjectReference Include="..\..\src\Bridges\MarketData.VwapServer\MarketData.Bridge.Vwap.csproj" />
-    <ProjectReference Include="..\..\src\Common\MarketData.Dto\MarketData.Dto.csproj" />
-    <ProjectReference Include="..\..\src\Common\MarketData.Common.Infrastructure\MarketData.Common.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\MarketData.Backends\MarketData.Backends.csproj" />
+    <ProjectReference Include="..\..\src\MarketData.Common\MarketData.Common.csproj" />
   </ItemGroup>
 
 </Project>

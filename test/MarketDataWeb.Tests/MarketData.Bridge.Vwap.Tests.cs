@@ -1,4 +1,4 @@
-﻿using MarketData.Dto;
+﻿using MarketData.Common.Dto;
 using MarketData.Common.Infrastructure;
 using MarketData.VwapServer;
 using Microsoft.Reactive.Testing;

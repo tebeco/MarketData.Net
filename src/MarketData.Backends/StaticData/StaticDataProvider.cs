@@ -1,4 +1,4 @@
-﻿using MarketData.Dto;
+﻿using MarketData.Common.Dto;
 using System;
 using System.Collections.Generic;
 

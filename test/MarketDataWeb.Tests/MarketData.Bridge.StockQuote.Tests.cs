@@ -1,10 +1,10 @@
 ﻿using Xunit;
-using MarbleScheduler = MarbleTest.Net.MarbleScheduler;
+using MarbleTest.Net;
 using NSubstitute;
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using MarketData.Dto;
+using MarketData.Common.Dto;
 using MarketData.Bridge.Stock;
 
 namespace MarketDataWeb.Tests
