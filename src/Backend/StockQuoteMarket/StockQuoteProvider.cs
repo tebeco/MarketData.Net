@@ -18,11 +18,6 @@ namespace MarketData.Backend.StockQuote
         private const double MicrosoftMin = 51;
         private const double MicrosoftMax = 53;
 
-        public StockQuoteProvider()
-        {
-
-        }
-
         public IObservable<Quote> GetEventStream()
         {
             var googleStock = new RandomSequenceGenerator(GoogleMin, GoogleMax)
