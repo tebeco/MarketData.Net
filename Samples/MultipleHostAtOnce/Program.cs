@@ -3,33 +3,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace MultipleHostAtOnce
 {
-    public static class Program
+    public class Program
     {
         public static void Main(string[] args)
         {
-            var host1 = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
-                .UseEnvironment("Development")
+            var host1 = WebHost.CreateDefaultBuilder(args)
                 .UseUrls("http://localhost:5001")
                 .UseStartup<Startup1>()
-                .UseApplicationInsights()
                 .Build();
 
-            var host2 = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
-                .UseEnvironment("Development")
+            var host2 = WebHost.CreateDefaultBuilder(args)
                 .UseUrls("http://localhost:5002")
                 .UseStartup<Startup2>()
-                .UseApplicationInsights()
                 .Build();
 
             host1.Start();
