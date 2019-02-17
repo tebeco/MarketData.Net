@@ -1,72 +1,60 @@
 ﻿using MarketData.Backend.AllInOne.Startup;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using System;
-using System.IO;
+using System.Threading.Tasks;
 
 namespace MarketData.Backend.AllInOne
 {
     public class Market
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            StartForex();
-            StartStockQuote();
-            StartTrade();
-            StartStaticData();
+            var forexServer = StartForex();
+            var stockQuoteServer = StartStockQuote();
+            var tradeServer = StartTrade();
+            var staticDataServer = StartStaticData();
 
-            Console.ReadLine();
+            await Task.WhenAny(new[] { forexServer, stockQuoteServer, tradeServer, staticDataServer });
         }
 
-        public static void StartForex()
+        public static Task StartForex()
         {
-            var forexHost = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseEnvironment("Development")
+            var forexHost = WebHost.CreateDefaultBuilder()
                 .UseUrls("http://localhost:8096")
                 .UseStartup<ForexStartup>()
                 .Build();
 
-            forexHost.Start();
+            return forexHost.RunAsync();
         }
 
-        public static void StartStockQuote()
+        public static Task StartStockQuote()
         {
-            var stockQuoteHost = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseEnvironment("Development")
+            var stockQuoteHost = WebHost.CreateDefaultBuilder()
                 .UseUrls("http://localhost:8097")
                 .UseStartup<StockQuoteStartup>()
                 .Build();
 
-            stockQuoteHost.Start();
+            return stockQuoteHost.RunAsync();
         }
 
-        public static void StartTrade()
+        public static Task StartTrade()
         {
-            var tradeHost = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseEnvironment("Development")
+            var tradeHost = WebHost.CreateDefaultBuilder()
                 .UseUrls("http://localhost:8098")
                 .UseStartup<TradeStartup>()
                 .Build();
 
-            tradeHost.Start();
+            return tradeHost.RunAsync();
         }
 
-        public static void StartStaticData()
+        public static Task StartStaticData()
         {
-            var staticDataHost = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseEnvironment("Development")
+            var staticDataHost = WebHost.CreateDefaultBuilder()
                 .UseUrls("http://localhost:8099")
                 .UseStartup<StaticDataStartup>()
                 .Build();
 
-            staticDataHost.Start();
+            return staticDataHost.RunAsync();
         }
     }
 }

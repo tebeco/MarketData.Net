@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net.Sockets;
 using System.Net.WebSockets;
 using System.Reactive.Concurrency;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
 using System.Threading;
 
 namespace MarketData.Infrastructure

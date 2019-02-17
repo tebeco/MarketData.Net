@@ -1,6 +1,4 @@
-﻿using MarketData.Dto;
-using MarketData.Infrastructure;
-using System.Reactive.Concurrency;
+﻿using System.Reactive.Concurrency;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
