@@ -1,5 +1,5 @@
 ﻿using MarketData.Dto;
-using MarketData.Infrastructure;
+using MarketData.Common.Infrastructure;
 using MarketData.VwapServer;
 using Microsoft.Reactive.Testing;
 using NSubstitute;

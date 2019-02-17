@@ -1,4 +1,4 @@
-﻿namespace MarketData.Dto
+﻿namespace MarketData.Common.Dto
 {
     public interface IProduceJson
     {

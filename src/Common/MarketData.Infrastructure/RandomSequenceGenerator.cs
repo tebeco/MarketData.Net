@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reactive.Linq;
 
-namespace MarketData.Infrastructure
+namespace MarketData.Common.Infrastructure
 {
     public class RandomSequenceGenerator
     {

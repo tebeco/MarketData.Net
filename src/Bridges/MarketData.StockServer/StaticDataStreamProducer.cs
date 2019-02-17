@@ -1,4 +1,4 @@
-﻿using MarketData.Infrastructure;
+﻿using MarketData.Common.Infrastructure;
 using System;
 using System.Threading.Tasks;
 

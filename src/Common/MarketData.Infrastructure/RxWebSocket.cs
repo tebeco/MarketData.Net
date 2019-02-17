@@ -4,7 +4,7 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading;
 
-namespace MarketData.Infrastructure
+namespace MarketData.Common.Infrastructure
 {
     public class RxWebSocket<TReceived>
     {

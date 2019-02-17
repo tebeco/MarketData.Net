@@ -1,4 +1,4 @@
-﻿using MarketData.Infrastructure;
+﻿using MarketData.Common.Infrastructure;
 using Xunit;
 using MarbleScheduler = MarbleTest.Net.MarbleScheduler;
 using NSubstitute;

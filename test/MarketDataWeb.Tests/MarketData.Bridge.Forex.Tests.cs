@@ -3,8 +3,8 @@ using NSubstitute;
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using MarketData.Dto;
-using MarketData.Infrastructure;
+using MarketData.Common.Dto;
+using MarketData.Common.Infrastructure;
 using MarketData.Bridge.Forex;
 using MarbleTest.Net;
 

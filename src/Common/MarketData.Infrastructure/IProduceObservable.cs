@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace MarketData.Infrastructure
+namespace MarketData.Common.Infrastructure
 {
     public interface IProduceObservable<T>
     {

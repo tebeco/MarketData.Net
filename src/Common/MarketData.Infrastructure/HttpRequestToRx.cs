@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
-namespace MarketData.Infrastructure
+namespace MarketData.Common.Infrastructure
 {
     public class RxRequestReplyClient : IProduceObservable<string>
     {

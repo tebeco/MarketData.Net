@@ -1,5 +1,5 @@
 ﻿using MarketData.Dto;
-using MarketData.Infrastructure;
+using MarketData.Common.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Reactive.Concurrency;

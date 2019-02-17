@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace MarketData.Dto
+namespace MarketData.Common.Dto
 {
     public class Trade : IProduceJson
     {
